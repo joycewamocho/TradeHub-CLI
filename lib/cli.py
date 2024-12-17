@@ -45,7 +45,7 @@ class Trade_hub:
             elif choice == 2:
                 self.product_menu()
             elif choice ==3:
-                self.product_menu()
+                self.order_menu()
             elif choice==4:
                 self.exit()
             else:
@@ -182,6 +182,56 @@ class Trade_hub:
             click.echo (f"Product ID: {product.id}, Name: {product.name}, Price: {product.price}, Image Url: {product.image_url}")
         else:
             click.echo("Product not found")
+
+
+    # order menu
+    def order_menu(self):
+        while True:
+            click.echo("=== Order Management ===")
+            click.echo("1. Add Order")
+            click.echo("2. List All Orders")
+            click.echo("3. Delete Order")
+            click.echo("4. Back to Main Menu")
+            choice = click.prompt("Choose an option", type=int)
+
+            if choice == 1:
+                self.add_order()
+            elif choice == 2:
+                self.list_orders()
+            elif choice == 3:
+                self.delete_order()
+            elif choice == 4:
+                break
+            else:
+                click.echo("Invalid choice. Try again.")
+
+    def add_order(self):
+        product_id = click.prompt("Enter Product ID", type=int)
+        buyer_id = click.prompt("Enter Buyer ID", type=int)
+
+        if not get_product_by_id(product_id) or not get_user_by_id(buyer_id):
+            click.echo("Error: Invalid Product ID or Buyer ID.")
+            return
+        order = Order(product_id=product_id, buyer_id=buyer_id)
+        session.add(order)
+        session.commit()
+        click.echo("Order added successfully.")
+
+    def list_orders(self):
+        orders = session.query(Order).all()
+        for order in orders:
+            click.echo(f"ID: {order.id}, Product ID: {order.product_id}, Buyer ID: {order.buyer_id}")
+
+    def delete_order(self):
+        order_id = click.prompt("Enter Order ID to delete", type=int)
+        order = get_order_by_id(order_id)
+        if order:
+            session.delete(order)
+            session.commit()
+            click.echo("Order deleted successfully.")
+        else:
+            click.echo("Order not found.")
+
 
 
 
