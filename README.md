@@ -33,7 +33,7 @@ tradehub-cli/
 ```       
 
 
-## SetUp insstructions
+## SetUp instructions
 clone this repository
 
 install dependencies
