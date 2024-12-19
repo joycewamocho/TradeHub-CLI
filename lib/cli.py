@@ -4,6 +4,7 @@ from models import Base,Order,Product,User
 import click
 import time
 
+
 DATABASE_URL = "sqlite:///trade_hub.db"
 
 engine = create_engine(DATABASE_URL)
@@ -11,11 +12,13 @@ Session =sessionmaker(bind=engine)
 
 session =Session()
 
+# initialize database
 def init_db():
     Base.metadata.create_all(engine)
     click.echo("database initialized" )
     time.sleep(2)
 
+#helper functions
 def get_user_by_id(user_id):
     return session.query(User).filter(User.id == user_id).first()
 
@@ -54,6 +57,7 @@ class Trade_hub:
         self.running = False
         click.echo("Thank you for using TradeHub,Goodbye!")
 
+    #User menu
     def user_menu(self):
         while True:
             click.echo("== User Management ==")
